@@ -37,11 +37,6 @@ mpinv <- function(X)
     return(mp)                                                                                                                               
 }                                                                                                                                            
                                                                                                                                               
-                                                                                                                                              
-                                                                                                                                              
-                                                                                                                                              
-                                                                                                                                              
-                                                                                                                                              
 distance2 <- function (x1, x2) {                                                                                                              
    temp <- x1 - x2                                                                                                                            
    sum(temp * temp)                                                                                                                           
@@ -75,9 +70,7 @@ nnmf_als <-function(x, k, maxiter, eps)
     W <- matrix(abs(rnorm(D * k)), D, k)                                                                                                      
                                                                                                                                               
     H <- matrix(abs(rnorm(k * N)), k, N)                                                                                                      
-                                                                                                                                              
-                                                                                                                                              
-                                                                                                                                              
+                                                                                                                                             
     Rscale = sum(W %*% H)                                                                                                                     
                                                                                                                                               
     sqrnorm = sqrt(Rscale / Xscale)                                                                                                           
@@ -305,15 +298,13 @@ nnmf <- function(x, k, method = 'nnmf_mm', maxiter = 1000, eps=2.2204e-016)
 {
       if (method == 'nnmf_als') {
             cat('Alternating Least Squares Algorithm', '\n')
-            nnmf_als(x, k, maxiter, eps)
-            
+            nnmf_als(x, k, maxiter, eps) 
 
       }         
 
       else if (method == 'nnmf_prob') {
             cat('Multinomial Algorithm', '\n')
-            nnmf_prob(x, k, maxiter, eps)
-            
+            nnmf_prob(x, k, maxiter, eps) 
 
       }         
 
