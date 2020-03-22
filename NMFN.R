@@ -2,6 +2,7 @@
 # Credit also to Lars Kai Hansen’s nnmf_als Matlabimplementation; Torsten Hothorn’s Moore-Penrose inverse function
 # Code developed by Timothy Liu
 
+#Moore-Penrose Inverse 
 mpinv <- function(X)                                                                                                                          
 {                                                                                                                                             
     Eps <- 100 * .Machine$double.eps                                                                                                       
@@ -36,13 +37,15 @@ mpinv <- function(X)
     mp[abs(mp) < Eps] <- 0                                                                                                                   
     return(mp)                                                                                                                               
 }                                                                                                                                            
-                                                                                                                                              
+                       
+#Euclidean Distance between two matrices
 distance2 <- function (x1, x2) {                                                                                                              
    temp <- x1 - x2                                                                                                                            
    sum(temp * temp)                                                                                                                           
 }                                                                                                                                             
                                                                                                                                               
-                                                                                                                                              
+                    
+#Non-negative Matrix Factorization via alternating least squares 
 nnmf_als <-function(x, k, maxiter, eps)                                                                                      
 {                                                                                                                                             
                                                                                                                                               
@@ -128,10 +131,9 @@ nnmf_als <-function(x, k, maxiter, eps)
                                                                                                                                               
 }                                                                                                                                             
                       
-
+#Non-negative Matrix Factorization via multiplicative update 
 nnmf_mm <-function(x, k, maxiter, eps)                                                                                    
 {                                                                                                                                       
-                                                                                                                                        
     print_iter <- 50 # iterations between print                                                                                        
                                                                                                                                         
     x <- as.matrix(x)                                                                                                                   
@@ -199,8 +201,8 @@ nnmf_mm <-function(x, k, maxiter, eps)
      z                                                                                                                                  
 }
 
-
-                                                                                                                                                                                                                                                                                 
+                         
+#Non-negative Matrix Factorization via multinomial 
 nnmf_prob <- function(x, k, maxiter, eps = 100*.Machine$double.eps)                                                                      
 {                                                                                                                                        
                                                                                                                                          
@@ -229,8 +231,6 @@ nnmf_prob <- function(x, k, maxiter, eps = 100*.Machine$double.eps)
                                                                                                                                          
   W1=W                                                                                                                                   
   H1=H                                                                                                                                   
-                                                                                                                                         
-                                                                                                                                         
                                                                                                                                          
   Xr_old = W%*%H                                                                                                                         
   for (iter in 1:maxiter) {                                                                                                              
@@ -293,7 +293,8 @@ z
                                                                                                                                          
 }                                                                                                                                        
                                                                                                                       
-                                                                                 
+          
+#main function of Non-negative Matrix Factorization 
 nnmf <- function(x, k, method = 'nnmf_mm', maxiter = 1000, eps=2.2204e-016)
 {
       if (method == 'nnmf_als') {
