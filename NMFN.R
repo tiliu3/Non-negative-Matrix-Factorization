@@ -197,7 +197,7 @@ nnmf_mm <-function(x, k, maxiter, eps)
 
        }                                                                                                                                
                                                                                                                                         
-     z <-c (list(W = W,H = H))                                                                 
+     z <- c (list(W = W,H = H))                                                                 
      z                                                                                                                                  
 }
 
@@ -206,31 +206,31 @@ nnmf_mm <-function(x, k, maxiter, eps)
 nnmf_prob <- function(x, k, maxiter, eps = 100*.Machine$double.eps)                                                                      
 {                                                                                                                                        
                                                                                                                                          
-  print_iter=50;                                                                                                                         
-  powers=1.5+(2.5-1.5)*((1:maxiter)-1)/(maxiter-1);                                                                                      
+  print_iter = 50;                                                                                                                         
+  powers = 1.5+(2.5-1.5)*((1:maxiter)-1)/(maxiter-1);                                                                                      
                                                                                                                                          
-  D=dim(x)[1L];                                                                                                                          
-  N=dim(x)[2L];                                                                                                                          
+  D = dim(x)[1L];                                                                                                                          
+  N = dim(x)[2L];                                                                                                                          
                                                                                                                                          
   X_factor = sum(x);                                                                                                                     
   X_org = x;                                                                                                                             
-  x=x/X_factor;                                                                                                                          
+  x = x/X_factor;                                                                                                                          
                                                                                                                                          
-  W<-matrix(abs(rnorm(D*k)), D,k)                                                                                                        
+  W <- matrix(abs(rnorm(D*k)), D,k)                                                                                                        
                                                                                                                                          
   W = W / t(matrix(rep(colSums(W),D), ncol(W),nrow(W)))                                                                                  
                                                                                                                                          
-  H<-matrix(abs(rnorm(k*N)),k,N)                                                                                                         
+  H <- matrix(abs(rnorm(k*N)),k,N)                                                                                                         
                                                                                                                                          
-  H= H / (matrix(rep(rowSums(H),N), nrow(H),ncol(H)))                                                                                    
+  H = H / (matrix(rep(rowSums(H),N), nrow(H),ncol(H)))                                                                                    
                                                                                                                                          
                                                                                                                                          
-  P=matrix(rep(1),k,1)                                                                                                                   
+  P = matrix(rep(1),k,1)                                                                                                                   
                                                                                                                                          
-  P=P/sum(P)                                                                                                                             
+  P = P/sum(P)                                                                                                                             
                                                                                                                                          
-  W1=W                                                                                                                                   
-  H1=H                                                                                                                                   
+  W1 = W                                                                                                                                   
+  H1 = H                                                                                                                                   
                                                                                                                                          
   Xr_old = W%*%H                                                                                                                         
   for (iter in 1:maxiter) {                                                                                                              
@@ -243,14 +243,14 @@ nnmf_prob <- function(x, k, maxiter, eps = 100*.Machine$double.eps)
                                                                                                                                          
                                                                                                                                          
       dummy =  rowSums(XQ)                                                                                                               
-      W1[,j]=t(dummy / sum(dummy))                                                                                                       
+      W1[,j] = t(dummy / sum(dummy))                                                                                                       
                                                                                                                                          
       dummy = colSums(XQ)                                                                                                                
-      H1[j,]=(dummy / sum(dummy))                                                                                                        
+      H1[j,] = (dummy / sum(dummy))                                                                                                        
                                                                                                                                          
     }                                                                                                                                    
-    W=W1                                                                                                                                 
-    H=H1                                                                                                                                 
+    W = W1                                                                                                                                 
+    H = H1                                                                                                                                 
                                                                                                                                          
     if (iter%% print_iter ==0) {                                                                                                         
                                                                                                                                          
@@ -287,7 +287,7 @@ nnmf_prob <- function(x, k, maxiter, eps = 100*.Machine$double.eps)
 W =  W%*%diag(diag(sqrt(P)),k,k) *X_factor                                                                                               
 H = diag(diag(sqrt(P)),k,k) %*%H                                                                                                         
                                                                                                                                          
-z<- c(list(W=W, H=H))                                                                                                                    
+z <- c(list(W=W, H=H))                                                                                                                    
                                                                                                                                          
 z                                                                                                                                        
                                                                                                                                          
