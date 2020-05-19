@@ -74,37 +74,37 @@ nnmf_als <-function(x, k, maxiter, eps)
                                                                                                                                               
     H <- matrix(abs(rnorm(k * N)), k, N)                                                                                                      
                                                                                                                                              
-    Rscale = sum(W %*% H)                                                                                                                     
+    Rscale <- sum(W %*% H)                                                                                                                     
                                                                                                                                               
-    sqrnorm = sqrt(Rscale / Xscale)                                                                                                           
+    sqrnorm <- sqrt(Rscale / Xscale)                                                                                                           
                                                                                                                                               
-    H = H / sqrnorm                                                                                                                           
-    W = W / sqrnorm                                                                                                                           
+    H <- H / sqrnorm                                                                                                                           
+    W <- W / sqrnorm                                                                                                                           
                                                                                                                                               
-    Xr_old = W %*% H                                                                                                                          
+    Xr_old <- W %*% H                                                                                                                          
                                                                                                                                               
                                                                                                                                               
     for (iter in 1:maxiter) {                                                                                                                 
                                                                                                                                               
-       W = x %*% t(mpinv(H%*%t(H)) %*% H)                                                                                                     
-       W = (W>0) * W                                                                                                                          
-       W = W/(t(matrix(rep(colSums(W),D),ncol(W),nrow(W))) + eps)                                                                             
+       W <- x %*% t(mpinv(H%*%t(H)) %*% H)                                                                                                     
+       W <- (W>0) * W                                                                                                                          
+       W <- W/(t(matrix(rep(colSums(W),D),ncol(W),nrow(W))) + eps)                                                                             
                                                                                                                                               
-       H =t(W %*% mpinv(t(W) %*% W)) %*% x                                                                                                    
+       H <- t(W %*% mpinv(t(W) %*% W)) %*% x                                                                                                    
                                                                                                                                               
-       H = H * (H>0)                                                                                                                          
+       H <- H * (H>0)                                                                                                                          
                                                                                                                                               
        if (iter%% print_iter ==0) {                                                                                                           
                                                                                                                                               
-           Xr = W %*% H                                                                                                                       
+           Xr <- W %*% H                                                                                                                       
                                                                                                                                               
-           diff = sum(abs(Xr_old-Xr))                                                                                                         
+           diff <- sum(abs(Xr_old-Xr))                                                                                                         
                                                                                                                                               
-           Xr_old = Xr                                                                                                                        
+           Xr_old <- Xr                                                                                                                        
                                                                                                                                               
-           eucl_dist = distance2(x, W %*% H)                                                                                                  
+           eucl_dist <- distance2(x, W %*% H)                                                                                                  
                                                                                                                                               
-           errorx = mean(abs(x - W %*% H)) / mean(x)                                                                                          
+           errorx <- mean(abs(x - W %*% H)) / mean(x)                                                                                          
                                                                                                                                               
            cat('Iter = ', iter , "\t")                                                                                                        
                                                                                                                                               
@@ -157,25 +157,25 @@ nnmf_mm <-function(x, k, maxiter, eps)
                                                                                                                                         
     H <- matrix(abs(rnorm(k * m)), k, m)                                                                                                
                                                                                                                                         
-    Xr_old = W %*% H                                                                                                                    
+    Xr_old <- W %*% H                                                                                                                    
                                                                                                                                         
     for (iter in 1:maxiter) {                                                                                                           
                                                                                                                                         
-       H = H * (t(W) %*% x) / ((t(W) %*% W) %*% H + eps)                                                                                
+       H <- H * (t(W) %*% x) / ((t(W) %*% W) %*% H + eps)                                                                                
                                                                                                                                         
-       W = W * t(H %*% t(x)) / (W %*% (H %*% t(H)) + eps)                                                                               
+       W <- W * t(H %*% t(x)) / (W %*% (H %*% t(H)) + eps)                                                                               
                                                                                                                                         
        if (iter%% print_iter ==0) {                                                                                                     
                                                                                                                                         
-           Xr = W %*% H                                                                                                                 
+           Xr <- W %*% H                                                                                                                 
                                                                                                                                         
-           diff = sum(abs(Xr_old-Xr))                                                                                                   
+           diff <- sum(abs(Xr_old-Xr))                                                                                                   
                                                                                                                                         
-           Xr_old = Xr                                        
+           Xr_old <- Xr                                        
                                                      
-           eucl_dist = distance2(x, W %*% H)
+           eucl_dist <- distance2(x, W %*% H)
                     
-           errorx = mean(abs(x - W %*% H)) / mean(x)                                                                                    
+           errorx <- mean(abs(x - W %*% H)) / mean(x)                                                                                    
                                                                                                                                         
            cat('Iter = ', iter , "\t")                                                                                                 
                                                                                                                                         
@@ -204,65 +204,64 @@ nnmf_mm <-function(x, k, maxiter, eps)
                          
 #Non-negative Matrix Factorization via multinomial 
 nnmf_prob <- function(x, k, maxiter, eps = 100*.Machine$double.eps)                                                                      
-{                                                                                                                                        
+{                                                                                                                                                                                                                                                                               
+  print_iter <- 50;                                                                                                                         
+  powers <- 1.5+(2.5-1.5)*((1:maxiter)-1)/(maxiter-1);                                                                                      
                                                                                                                                          
-  print_iter = 50;                                                                                                                         
-  powers = 1.5+(2.5-1.5)*((1:maxiter)-1)/(maxiter-1);                                                                                      
+  D <- dim(x)[1L];                                                                                                                          
+  N <- dim(x)[2L];                                                                                                                          
                                                                                                                                          
-  D = dim(x)[1L];                                                                                                                          
-  N = dim(x)[2L];                                                                                                                          
-                                                                                                                                         
-  X_factor = sum(x);                                                                                                                     
-  X_org = x;                                                                                                                             
-  x = x/X_factor;                                                                                                                          
+  X_factor <- sum(x);                                                                                                                     
+  X_org <- x;                                                                                                                             
+  x <- x/X_factor;                                                                                                                          
                                                                                                                                          
   W <- matrix(abs(rnorm(D*k)), D,k)                                                                                                        
                                                                                                                                          
-  W = W / t(matrix(rep(colSums(W),D), ncol(W),nrow(W)))                                                                                  
+  W <- W / t(matrix(rep(colSums(W),D), ncol(W),nrow(W)))                                                                                  
                                                                                                                                          
   H <- matrix(abs(rnorm(k*N)),k,N)                                                                                                         
                                                                                                                                          
-  H = H / (matrix(rep(rowSums(H),N), nrow(H),ncol(H)))                                                                                    
+  H <- H / (matrix(rep(rowSums(H),N), nrow(H),ncol(H)))                                                                                                                                                                                                                        
                                                                                                                                          
+  P <- matrix(rep(1),k,1)                                                                                                                   
                                                                                                                                          
-  P = matrix(rep(1),k,1)                                                                                                                   
+  P <- P/sum(P)                                                                                                                             
                                                                                                                                          
-  P = P/sum(P)                                                                                                                             
+  W1 <- W                                                                                                                                   
+  H1 <- H                                                                                                                                   
                                                                                                                                          
-  W1 = W                                                                                                                                   
-  H1 = H                                                                                                                                   
-                                                                                                                                         
-  Xr_old = W%*%H                                                                                                                         
+  Xr_old <- W%*%H    
+    
   for (iter in 1:maxiter) {                                                                                                              
                                                                                                                                          
-    Qnorm = (W %*% diag(diag(P),k,k)) %*%H                                                                                               
+    Qnorm <- (W %*% diag(diag(P),k,k)) %*%H                                                                                               
                                                                                                                                          
     for (j in 1:k) {                                                                                                                     
-      Q<- ( t(t(W[,j])) %*% H[j,] * P[j] ) / (Qnorm + eps)                                                                               
-      XQ = x * Q                                                                                                                         
+      Q <- ( t(t(W[,j])) %*% H[j,] * P[j] ) / (Qnorm + eps)                                                                               
+      XQ <- x * Q                                                                                                                         
                                                                                                                                          
                                                                                                                                          
-      dummy =  rowSums(XQ)                                                                                                               
-      W1[,j] = t(dummy / sum(dummy))                                                                                                       
+      dummy <- rowSums(XQ)                                                                                                               
+      W1[,j] <- t(dummy / sum(dummy))                                                                                                       
                                                                                                                                          
-      dummy = colSums(XQ)                                                                                                                
-      H1[j,] = (dummy / sum(dummy))                                                                                                        
+      dummy <- colSums(XQ)                                                                                                                
+      H1[j,] <- (dummy / sum(dummy))                                                                                                        
                                                                                                                                          
     }                                                                                                                                    
-    W = W1                                                                                                                                 
-    H = H1                                                                                                                                 
+    W <- W1                                                                                                                                 
+    H <- H1                                                                                                                                 
                                                                                                                                          
     if (iter%% print_iter ==0) {                                                                                                         
                                                                                                                                          
-           Xr = W %*% H                                                                                                                  
+           Xr <- W %*% H                                                                                                                  
                                                                                                                                          
-           diff = sum(abs(Xr_old-Xr))                                                                                                    
+           diff <- sum(abs(Xr_old-Xr))                                                                                                    
                                                                                                                                          
-           Xr_old = Xr                                                                                                                   
+           Xr_old <- Xr                                                                                                                   
                                                                                                                                          
-           eucl_dist = distance2(x, W %*% H)                                                                                             
+           eucl_dist <- distance2(x, W %*% H)                                                                                             
                                                                                                                                          
-           errorx = mean(abs(x - W %*% H)) / mean(x)                                                                                     
+           errorx <- mean(abs(x - W %*% H)) / mean(x)                                                                                     
                                                                                                                                          
            cat('Iter = ', iter , "\t")                                                                                                   
                                                                                                                                          
@@ -272,20 +271,17 @@ nnmf_prob <- function(x, k, maxiter, eps = 100*.Machine$double.eps)
                                                                                                                                          
            cat('eucl dist = ', eucl_dist, "\n")                                                                                          
                                                                                                                                          
-           if (errorx < 10e-6) {                                                                                                           
-                                                                                                                                         
-                  cat("Execution finishes at iteration = ", iter, "\n")                                                                  
-                                                                                                                                         
-                  break                                                                                                                  
-                                                                                                                                         
+           if (errorx < 10e-6) {                                                                                                                                                                                                                                          
+                  cat("Execution finishes at iteration = ", iter, "\n")                                                                                                                                                                                                   
+                  break                                                                                                                                                                                                                                           
             }                                                                                                                            
                                                                                                                                          
        }                                                                                                                                 
                                                                                                                                          
   }                                                                                                                                      
                                                                                                                                          
-W =  W%*%diag(diag(sqrt(P)),k,k) *X_factor                                                                                               
-H = diag(diag(sqrt(P)),k,k) %*%H                                                                                                         
+W <- W%*%diag(diag(sqrt(P)),k,k) *X_factor                                                                                               
+H <- diag(diag(sqrt(P)),k,k) %*%H                                                                                                         
                                                                                                                                          
 z <- c(list(W=W, H=H))                                                                                                                    
                                                                                                                                          
