@@ -49,40 +49,30 @@ distance2 <- function (x1, x2) {
 nnmf_als <-function(x, k, maxiter, eps)                                                                                      
 {                                                                                                                                             
                                                                                                                                               
-    print_iter <- 50 # iterations between print                                                                                               
-                                                                                                                                              
+    print_iter <- 50 # iterations between print                                                                                             
     x <- as.matrix(x)                                                                                                                         
                                                                                                                                               
-    if (any(!is.finite(x)))                                                                                                                   
-                                                                                                                                              
+    if (any(!is.finite(x)))                                                                                                              
         stop("infinite or missing values in 'x'")                                                                                             
                                                                                                                                               
-    dx <- dim(x)                                                                                                                              
-                                                                                                                                              
-    D <- dx[1L]                                                                                                                               
-                                                                                                                                              
+    dx <- dim(x)                                                                                                                             
+    D <- dx[1L]                                                                                                                              
     N <- dx[2L]                                                                                                                               
-    Xscale = sum(x)                                                                                                                           
+    Xscale = sum(x)                                                                                                                          
                                                                                                                                               
+    if (!D || !N)                                                                                                                          
+        stop("0 extent dimensions")                                                                                                         
                                                                                                                                               
-    if (!D || !N)                                                                                                                            
-                                                                                                                                              
-        stop("0 extent dimensions")                                                                                                          
-                                                                                                                                              
-                                                                                                                                              
-    W <- matrix(abs(rnorm(D * k)), D, k)                                                                                                      
-                                                                                                                                              
+    W <- matrix(abs(rnorm(D * k)), D, k)                                                                                                     
     H <- matrix(abs(rnorm(k * N)), k, N)                                                                                                      
                                                                                                                                              
-    Rscale <- sum(W %*% H)                                                                                                                     
-                                                                                                                                              
+    Rscale <- sum(W %*% H)                                                                                                                 
     sqrnorm <- sqrt(Rscale / Xscale)                                                                                                           
                                                                                                                                               
     H <- H / sqrnorm                                                                                                                           
     W <- W / sqrnorm                                                                                                                           
                                                                                                                                               
-    Xr_old <- W %*% H                                                                                                                          
-                                                                                                                                              
+    Xr_old <- W %*% H                                                                                                                      
                                                                                                                                               
     for (iter in 1:maxiter) {                                                                                                                 
                                                                                                                                               
@@ -142,19 +132,14 @@ nnmf_mm <-function(x, k, maxiter, eps)
                                                                                                                                         
         stop("infinite or missing values in 'x'")                                                                                       
                                                                                                                                         
-    dx <- dim(x)                                                                                                                        
-                                                                                                                                        
-    n <- dx[1L]                                                                                                                         
-                                                                                                                                        
+    dx <- dim(x)                                                                                                                       
+    n <- dx[1L]                                                                                                                        
     m <- dx[2L]                                                                                                                         
                                                                                                                                         
-    if (!n || !m)                                                                                                                       
-                                                                                                                                        
-        stop("0 extent dimensions")                                                                                                     
-                                                                                                                                        
+    if (!n || !m)                                                                                                                     
+        stop("0 extent dimensions")                                                                                                   
                                                                                                                                             
-    W <- matrix(abs(rnorm(n * k)), n, k)                                                                                                
-                                                                                                                                        
+    W <- matrix(abs(rnorm(n * k)), n, k)                                                                                              
     H <- matrix(abs(rnorm(k * m)), k, m)                                                                                                
                                                                                                                                         
     Xr_old <- W %*% H                                                                                                                    
